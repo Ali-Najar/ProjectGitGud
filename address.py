@@ -7,7 +7,7 @@ import time
 import pyautogui as pg
 import pydirectinput as pdir
 import gymnasium 
-import soulsgym
+# import soulsgym
 import numpy as np
 
 
@@ -67,12 +67,15 @@ class Offset:
     iudex_animation_time = [0x3A0 , 0x70 , 0x12E0]          #this is the offset from NS_SPRJ::SprjChrPhysicsModule
     iudex_max_animation_time = [0x3A0 , 0x70 , 0x12E4]      #this is the offset from NS_SPRJ::SprjChrPhysicsModule
 
+    global_speed = [0x0]
 
 
 class BaseAddress:
     hp = module['base'] + 0x0452CF60
     estus = module['base'] + 0x04644440
 
+    global_speed = module['base'] + 0x0999C28        #Pointer to instance of NS_SPRJ::GlobalSpeed
+    no_dead = module['base'] + 0x4768F68        #Pointer to instance of NS_SPRJ::NoDead
     WorldChrManImp = module['base'] + 0x4768E78 #Pointer to instance of NS_SPRJ::WorldChrManImp
     field_area = module['base'] + 0x04743A80    #Pointer to instance of NS_SPRJ::FieldArea
     LockTgtMan = module['base'] + 0x04766ca0    #Pointer to instance of NS_SPRJ::LockTgtMan
@@ -87,9 +90,12 @@ class Root:
     hp_addr = read_offsets(process,BaseAddress.hp,Offset.hp)
     chr_data_module = hp_addr - 0xD8                                        # address of NS_SPRJ::SprjChrDataModule
     chr_ins_ptr = chr_data_module + 0x8                                     # pointer to NS_SPRJ::PlayerIns
+    # print(hex(chr_ins_ptr))
     chr_ins = pm.r_int64(process,chr_ins_ptr)                               # address of NS_SPRJ::PlayerIns
+    # print(hex(chr_ins))
     chr_physics_ptr = chr_ins + 0x2428                                      # pointer to NS_SPRJ::SprjChrPhysicsModule
     chr_physics = pm.r_int64(process,chr_physics_ptr)                       # address of NS_SPRJ::SprjChrPhysicsModule
+    # print(hex(chr_physics), "FF")
     chr_game_data_ptr = pm.r_int64(process,BaseAddress.GameManData) + 0x10  # Pointer to instance of NS_SPRJ::PlayerGameData
 
     try:
@@ -100,6 +106,10 @@ class Root:
 
 
 class Address:
+
+    global_speed = BaseAddress.global_speed
+    no_dead = BaseAddress.no_dead
+
     hp = read_offsets(process,BaseAddress.hp,Offset.hp)
     max_hp = hp + 0x4
     max_hp_permanent = max_hp + 0x4
@@ -145,8 +155,24 @@ class Address:
 
     LockOn = read_offsets(process,BaseAddress.LockTgtMan , Offset.LockOn)  # int16
 
-# print(hex(Address.O))
-# counter = 0
+
+# print(pm.r_float(process , Address.CamX))
+# print(pm.r_float(process , Address.CamY))
+# print(pm.r_float(process , Address.CamZ))
+# print(pm.w_float(process , BaseAddress.global_speed , 1))
+# print(pm.r_int(process , Address.global_speed))
+# print(hex(Address.global_speed))
+# # print(pm.r_float(process , 0x8B100FF33F800000))
+# print(hex(Root.hp_addr))
+# print(hex(pm.r_int64(process,Address.global_speed)))
+# print(hex(read_offsets(process,BaseAddress.global_speed,Offset.global_speed)))
+# print(pm.r_float(process , Address.CamX) , "FD")
+# print_string(process , Address.player_animation_name)
+# print(hex(Address.O), print(Address.hp), print(Address.CamX), print(Address.Z))
+
+# while True:
+#     print(pm.r_int16(process , Address.LockOn))
+# # counter = 0
 # while True:
 # pm.w_int(process, Address.estus , 10)
 # pdir.press('r')
@@ -157,7 +183,7 @@ class Address:
 # print(pm.r_float(process,Address.player_max_animation_time))
 # pdir.press('r')
 # time.sleep(max(0,0.3))
-# print(pm.r_float(process,Address.player_max_animation_time))
+# print(pm.r_float(process,Address.plaWyer_max_animation_time))
 # pdir.press('r')
 # time.sleep(max(0,0.3))
 # print(pm.r_float(process,Address.player_max_animation_time))

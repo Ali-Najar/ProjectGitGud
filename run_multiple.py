@@ -6,7 +6,7 @@ import os
 import ctypes
 
 import player_xyz as pxyz
-
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 def get_process_pid(process_name):   #function to get pid using process name
     for proc in psutil.process_iter(['pid', 'name']):
@@ -15,7 +15,7 @@ def get_process_pid(process_name):   #function to get pid using process name
     return None
 
 # Define the number of times you want to run the script
-num_runs = 500
+num_runs = 1
 process_name = "DarkSoulsIII.exe"
 counter = 0
 
@@ -43,42 +43,65 @@ for i in range(num_runs):
     time.sleep(1)
     pdir.keyUp('w')
     time.sleep(4)
+    print()
     print("process",i)
     process1 = None
     process2 = None
     process3 = None
     process4 = None
-    pdir.keyUp('w')
-    pdir.keyUp('s')
-    pdir.keyUp('d')
-    pdir.keyUp('a')
-    pdir.keyUp('o')
-    pdir.keyUp('p')
-    pdir.keyUp('k')
-    pdir.keyUp('j')
-    pdir.keyUp('space')
+    # pdir.keyUp('w')
+    # pdir.keyUp('s')
+    # pdir.keyUp('d')
+    # pdir.keyUp('a')
+    # pdir.keyUp('o')
+    # pdir.keyUp('p')
+    # pdir.keyUp('k')
+    # pdir.keyUp('j')
+    # pdir.keyUp('space')
+    # try:
+    #     pxyz.teleport_to_boss()
+    #     process0 = subprocess.Popen(['python', 'fix_enemy.py'])
+    #     process1 = subprocess.Popen(['python', 'avoid_fall.py'])
+    #     process2 = subprocess.Popen(['python', 'test_cam.py'])
+    #     process3 = subprocess.Popen(['python', 'test_lock.py'])
+    #     process4 = subprocess.Popen(['python', 'test_move.py'])
+    #     process0.terminate()
+    #     # subprocess.run(["python", "move_training.py"],check=True)
+
+    #     subprocess.run(["python", "test_act1.py"],check=True)
+    #     subprocess.run(["python", "test_act2.py"],check=True)
+    #     process1.terminate()
+    #     process2.terminate()
+    #     process3.terminate()
+    #     process4.terminate()
+    # except:
+    #     if process1 != None:
+    #         process1.terminate()
+    #         process2.terminate()
+    #         process3.terminate()
+    #         process4.terminate()
+    #     if counter%2==0:
+    #         pdir.keyDown('w')
+    #         time.sleep(4)
+    #         pdir.keyUp('w')
+    #     else:
+    #         pdir.keyDown('s')
+    #         time.sleep(4)
+    #         pdir.keyUp('s')
     try:
         pxyz.teleport_to_boss()
         process0 = subprocess.Popen(['python', 'fix_enemy.py'])
-        process1 = subprocess.Popen(['python', 'avoid_fall.py'])
+        # process1 = subprocess.Popen(['python', 'avoid_fall.py'])
         process2 = subprocess.Popen(['python', 'test_cam.py'])
-        process3 = subprocess.Popen(['python', 'test_lock.py'])
-        process4 = subprocess.Popen(['python', 'test_move.py'])
+        # process2 = subprocess.Popen(['python', 'test_lock.py'])
+        time.sleep(1)
         process0.terminate()
-        # subprocess.run(["python", "move_training.py"],check=True)
-
-        subprocess.run(["python", "test_act1.py"],check=True)
-        subprocess.run(["python", "test_act2.py"],check=True)
-        process1.terminate()
+        subprocess.run(["python", "lock_training.py"],check=True)
+        # process1.terminate()
         process2.terminate()
-        process3.terminate()
-        process4.terminate()
     except:
-        if process1 != None:
-            process1.terminate()
-            process2.terminate()
-            process3.terminate()
-            process4.terminate()
+        # if process1 != None:
+            # process1.terminate()
         if counter%2==0:
             pdir.keyDown('w')
             time.sleep(4)

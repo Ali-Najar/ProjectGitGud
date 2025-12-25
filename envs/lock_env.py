@@ -6,7 +6,7 @@ import pyMeow as pm
 import random
 import pydirectinput as pdir
 import time
-
+pdir.PAUSE = 0.0
 process = address.process
 
 class LockEnv(gym.Env):
@@ -30,12 +30,12 @@ class LockEnv(gym.Env):
                         ])  
     
     def angle_calc(self):
-        x = pm.r_float(process , address.Address.iudex_X) - pm.r_float(process , address.Address.X)
-        y = pm.r_float(process , address.Address.iudex_Y) - pm.r_float(process , address.Address.Y)
-        z = pm.r_float(process , address.Address.iudex_Z) - pm.r_float(process , address.Address.Z)
-        cx = pm.r_float(process , address.Address.CamX)
-        cy = pm.r_float(process , address.Address.CamY)
-        cz = pm.r_float(process , address.Address.CamZ)
+        x = pm.r_float(process, address.Address.iudex_X) - pm.r_float(process, address.Address.X)
+        y = pm.r_float(process, address.Address.iudex_Y) - pm.r_float(process, address.Address.Y)
+        z = pm.r_float(process, address.Address.iudex_Z) - pm.r_float(process, address.Address.Z)
+        cx = pm.r_float(process, address.Address.CamX)
+        cy = pm.r_float(process, address.Address.CamY)
+        cz = pm.r_float(process, address.Address.CamZ)
 
         cam = np.array([cx , cy , cz])
         second_vec = np.array([x , y , z])
@@ -55,10 +55,22 @@ class LockEnv(gym.Env):
             done = True
         if pm.r_int(process , address.Address.iudex_hp)<=0 or pm.r_int(process , address.Address.hp)<=0:
             done = True
+
         if action == 0:
-            pdir.press(cam_actions.Lock_On[action][0])
-        self.reset()
+            pdir.keyDown(cam_actions.Lock_On[action][0])
+            time.sleep(0.1)
+            pdir.keyUp(cam_actions.Lock_On[action][0])
+        else:
+            time.sleep(0.1)
+
+        next_state = self.read_from_memory()
+
+        if pm.r_int(process, address.Address.hp)<=0:
+            done = True
+
         truncated = False
-        time.sleep(0.75)
-        return self.read_from_memory(), reward, done, truncated , info
+
+        self.state = next_state
+
+        return next_state, reward, done, truncated , info
     

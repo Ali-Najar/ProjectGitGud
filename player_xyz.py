@@ -47,7 +47,6 @@ def teleport_to_boss(boss_name="iudex"):
     # CamX = read_offsets(process ,field_area,Offset.CamX)
     # CamY = CamX + 0x4
     # CamZ = CamX + 0x8
-
     time.sleep(2)
     pm.w_float(process ,X ,InitPoint.iudex[0])
     pm.w_float(process ,Y ,InitPoint.iudex[1])
@@ -55,9 +54,14 @@ def teleport_to_boss(boss_name="iudex"):
     pm.w_float(process ,O ,InitPoint.iudex[3])
     time.sleep(1)
     pdir.press('e')
-    pdir.keyDown('w')
-    pdir.keyDown('space')
-    time.sleep(5)
-    pdir.keyUp('w')
-    pdir.keyUp('space')
-
+    time.sleep(3)
+    # pdir.keyDown('w')
+    # pdir.keyDown('space')
+    # time.sleep(5)
+    # pdir.keyUp('w')
+    pm.w_float(process ,X ,132.74497985839844)
+    pm.w_float(process ,Y ,-68.06697082519531)
+    pm.w_float(process ,Z ,575.564453125)
+    time.sleep(2)
+    # print(pm.r_float(process ,X),pm.r_float(process ,Y),pm.r_float(process ,Z))
+    # pdir.keyUp('space')

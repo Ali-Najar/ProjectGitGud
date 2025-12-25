@@ -14,8 +14,8 @@ while True:
         win = 0
         if pm.r_int(address.process,address.Address.iudex_hp) < 60:
             win = 1
-        pm.w_int(address.process, address.Address.iudex_hp, 500)
-        pm.w_int(address.process, address.Address.hp, -1)
+        # pm.w_int(address.process, address.Address.iudex_hp, 500)
+        # pm.w_int(address.process, address.Address.hp, -1)
         data = np.append(data,win)
         np.save('iudex_win_rate',data)
         time.sleep(10)

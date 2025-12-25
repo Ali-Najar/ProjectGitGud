@@ -6,7 +6,7 @@ import pyMeow as pm
 import random
 import pydirectinput as pdir
 import time
-
+pdir.PAUSE = 0.0
 process = address.process
 
 class CamEnv(gym.Env):
@@ -23,6 +23,7 @@ class CamEnv(gym.Env):
         self.state = self.read_from_memory()
 
         return self.state , {}
+    
     def read_from_memory(self):
         angle = self.angle_calc()
         x = pm.r_float(process , address.Address.iudex_X) - pm.r_float(process , address.Address.X)
@@ -51,7 +52,7 @@ class CamEnv(gym.Env):
         dot_prod = np.dot(cam , second_vec)
         cam_norm = np.linalg.norm(cam)
         second_vec_norm = np.linalg.norm(second_vec)
-        angle = np.arccos(dot_prod/(cam_norm*second_vec_norm))
+        angle = np.arccos(np.clip(dot_prod/(cam_norm*second_vec_norm), -1.0, 1.0))
 
         return angle
     
@@ -70,13 +71,26 @@ class CamEnv(gym.Env):
             done = True
         if pm.r_int(process , address.Address.iudex_hp)<=0 or pm.r_int(process , address.Address.hp)<=0:
             done = True
+
+        # 1. Execute Action
         if action < 4:
             pdir.keyDown(cam_actions.Camera[action][0])
-        time.sleep(0.15)
-        self.release_key()
-        self.reset()
+            
+        time.sleep(0.1)
+        
+        if action < 4:
+            self.release_key()
+
+        # 2. Update State (CRITICAL: Do not reset here)
+        self.state = self.read_from_memory()
+
+        # 3. Check Termination
+        if pm.r_int(process, address.Address.hp)<=0:
+            done = True
+
         truncated = False
-        return self.read_from_memory(), reward, done, truncated , info
+        
+        return self.state, reward, done, truncated , info
     
     def release_key(self):
         for key in self.keys:
