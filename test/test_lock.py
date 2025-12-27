@@ -5,6 +5,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv,VecNormalize
 import pydirectinput as pdir
 import os
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 pdir.PAUSE = 0.0
 
 # --- CONFIGURATION ---
@@ -39,22 +41,10 @@ obs = lock_env.reset()
 
 try:
     while True:  # Run for a certain number of steps
-        random_counter = 128
-        while random_counter > 0:
-            action = [lock_env.action_space.sample()]
-            
-            # Update your counter so the loop eventually ends
-            random_counter -= 1
-            obs, rewards, done, info = lock_env.step(action)  # Take the action in the environment
-            if done:
-                obs = lock_env.reset()
-        random_counter = 128
-        # while random_counter > 0:
-        #     action, _ = model.predict(obs, deterministic=True)  # Predict the next action
-        #     random_counter -= 1
-        #     obs, rewards, done, info = lock_env.step(action)  # Take the action in the environment
-        #     if done:
-        #         obs = lock_env.reset()
+        action, _ = model.predict(obs, deterministic=True)  # Predict the next action
+        obs, rewards, done, info = lock_env.step(action)  # Take the action in the environment
+        if done:
+            obs = lock_env.reset()
 except KeyboardInterrupt:
     print("Stopped.")
     lock_env.close()

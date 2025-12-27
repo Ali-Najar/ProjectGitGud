@@ -26,13 +26,13 @@ class CamEnv(gym.Env):
     
     def read_from_memory(self):
         angle = self.angle_calc()
-        x = pm.r_float(process , address.Address.iudex_X) - pm.r_float(process , address.Address.X)
-        y = pm.r_float(process , address.Address.iudex_Y) - pm.r_float(process , address.Address.Y)
-        z = pm.r_float(process , address.Address.iudex_Z) - pm.r_float(process , address.Address.Z)
+        x = pm.r_float(process, address.Address.iudex_X) - pm.r_float(process , address.Address.X)
+        y = pm.r_float(process, address.Address.iudex_Y) - pm.r_float(process , address.Address.Y)
+        z = pm.r_float(process, address.Address.iudex_Z) - pm.r_float(process , address.Address.Z)
         nx , ny , nz = self.normalize_vector(x, y, z)
-        cx = pm.r_float(process , address.Address.CamX)
-        cy = pm.r_float(process , address.Address.CamY)
-        cz = pm.r_float(process , address.Address.CamZ)
+        cx = pm.r_float(process, address.Address.CamX)
+        cy = pm.r_float(process, address.Address.CamY)
+        cz = pm.r_float(process, address.Address.CamZ)
         return np.array([
                         nx, ny, nz, cx, cy, cz,
                         angle,

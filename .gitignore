@@ -3,3 +3,5 @@ __pycache__/
 .VSCodeCounter
 .Iudex
 .PointerScan
+model_weights/
+prev_weights/

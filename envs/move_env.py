@@ -7,12 +7,13 @@ import random
 import pydirectinput as pdir
 import time
 
+pdir.PAUSE = 0.0
 process = address.process
 
 class MoveEnv(gym.Env):
     def __init__(self , boss_name="iudex", speed = 1):
         super(MoveEnv, self).__init__()
-        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf,shape=(1,))
+        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf,shape=(7,))
         self.action_space = gym.spaces.Discrete(len(move_actions.sub_actions))
         self.speed = speed
         self.maximum_stamina = pm.r_int(process,address.Address.max_stamina_permanent)
@@ -35,21 +36,22 @@ class MoveEnv(gym.Env):
         ex = pm.r_float(process , address.Address.iudex_X)
         ey = pm.r_float(process , address.Address.iudex_Y)
         ez = pm.r_float(process , address.Address.iudex_Z)
-        # attacking = 0
-        # if 'attack' in address.read_string(process,address.Address.iudex_animation_name).lower():
-        #     attacking = 1
+        attacking = 0
+        if 'attack' or 'atk' in address.read_string(process,address.Address.iudex_animation_name).lower():
+            attacking = 1
         # estus = 1
         # if pm.r_int(process , address.Address.estus) == 0:
         #     estus = 0
         # stamina = 1
-        # if self.maximum_stamina*0.2 > pm.r_int(process , address.Address.stamina):
+        # if self.maximum_stamina*0.3 > pm.r_int(process , address.Address.stamina):
         #     stamina = 0
         # hp = 1
         # if self.maximum_hp*0.5 > pm.r_int(process , address.Address.hp):
         #     hp = 0
-        dist = self.distance(x, y, z, ex, ey ,ez)
+        # dist = self.distance(x, y, z, ex, ey ,ez)
 
-        return np.array([dist])
+        # return np.array([dist])
+        return np.array([x, y, z, ex, ey ,ez, attacking])
         # return np.array([
         #                 hp,
         #                 stamina,
@@ -71,15 +73,14 @@ class MoveEnv(gym.Env):
             done = True
         if pm.r_int(process , address.Address.iudex_hp)<=0 or pm.r_int(process , address.Address.hp)<=0:
             done = True
-        if self.prev_action != action:
-            self.release_key()
-            for act in move_actions.sub_actions[action]:
-                pdir.keyDown(act)
-            if action == 2 or action == 3:
-                pdir.keyDown('w')
+    
+        for act in move_actions.sub_actions[action]:
+            pdir.keyDown(act)
+        time.sleep(0.1 / self.speed)
+        self.release_key()
+
         truncated = False
-        self.prev_action = action
-        time.sleep(0.1)
+
         return self.read_from_memory(), reward, done, truncated , info
     def release_key(self):
         for key in self.keys:

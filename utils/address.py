@@ -76,6 +76,7 @@ class BaseAddress:
 
     global_speed = module['base'] + 0x0999C28        #Pointer to instance of NS_SPRJ::GlobalSpeed
     no_dead = module['base'] + 0x4768F68        #Pointer to instance of NS_SPRJ::NoDead
+    no_hit = module['base'] + 0x4768F72        #Pointer to instance of NS_SPRJ::NoHit
     WorldChrManImp = module['base'] + 0x4768E78 #Pointer to instance of NS_SPRJ::WorldChrManImp
     field_area = module['base'] + 0x04743A80    #Pointer to instance of NS_SPRJ::FieldArea
     LockTgtMan = module['base'] + 0x04766ca0    #Pointer to instance of NS_SPRJ::LockTgtMan
@@ -109,6 +110,7 @@ class Address:
 
     global_speed = BaseAddress.global_speed
     no_dead = BaseAddress.no_dead
+    no_hit = BaseAddress.no_hit
 
     hp = read_offsets(process,BaseAddress.hp,Offset.hp)
     max_hp = hp + 0x4
@@ -156,6 +158,19 @@ class Address:
     LockOn = read_offsets(process,BaseAddress.LockTgtMan , Offset.LockOn)  # int16
 
 
+# pm.w_int(process , Address.no_dead, 1)
+# while True:
+#     x = pm.r_float(process , Address.X)
+#     y = pm.r_float(process , Address.Y)
+#     z = pm.r_float(process , Address.Z)
+#     ex = pm.r_float(process , Address.iudex_X)
+#     ey = pm.r_float(process , Address.iudex_Y)
+#     ez = pm.r_float(process , Address.iudex_Z)
+#     print(x, y, z)
+#     print(pm.r_int(process , Address.no_hit))
+#     print(np.linalg.norm(np.array([x,y,z]) - np.array([ex,ey,ez])))
+# #     print(read_string(process,Address.iudex_animation_name).lower())
+#     time.sleep(1)
 # print(pm.r_float(process , Address.CamX))
 # print(pm.r_float(process , Address.CamY))
 # print(pm.r_float(process , Address.CamZ))

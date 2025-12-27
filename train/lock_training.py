@@ -181,6 +181,11 @@ class LockEnvTrain(lock_env.LockEnv):
         # elif current_lock == 1:
         #     reward += 0.1
 
+        if current_lock == 0:
+            reward -= 1
+        if current_lock == 1:
+            reward += 1
+
         if pm.r_int(process, address.Address.hp)<=0:
             done = True
 
@@ -243,7 +248,7 @@ else:
         learning_starts=1000,
         batch_size=64,
         target_update_interval=1024,
-        exploration_fraction=0.8, 
+        exploration_fraction=0.5, 
         verbose=1
     )
 
@@ -255,7 +260,7 @@ callbacks = [custom_callback, checkpoint_callback]
 print("Starting Training...")
 try:
     # 50k steps is a good start. 4096 is too low for DQN.
-    model.learn(total_timesteps=2**15, callback=callbacks, reset_num_timesteps=False)
+    model.learn(total_timesteps=2**12, callback=callbacks, reset_num_timesteps=False)
 except KeyboardInterrupt:
     print("Training interrupted manually.")
 
