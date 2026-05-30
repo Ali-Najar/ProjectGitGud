@@ -8,10 +8,7 @@ Multiple agents are trained to handle different components of gameplay (movement
 
 ## 🎥 Demo (It might take a moment to load...)
 
-<p align="center">
-  <img src="output.gif" alt="RL Agent vs Iudex Gundyr" width="400"/>
-</p>
-
+[![Demo](assets/gundyr.webp)](assets/demo_480p.mp4)
 
 ---
 
@@ -24,12 +21,10 @@ Multiple agents are trained to handle different components of gameplay (movement
   - Lock-On system (`LockEnv`)
   - Combat Actions (`ActEnv`)
 - 🤖 **Action Learning** using:
-  - PPO (Stable-Baselines3) for movement, camera, and lock
-  - Q-Learning for dodge and combat policies
+  - DQN (Stable-Baselines3) for movement, camera, lock, dodge, and combat policies
 - 📦 **Real-time interaction** using:
   - `pydirectinput` to press keys
   - `pyMeow` & `pymem` for reading/writing game memory
-- 📉 **Reward Shaping** per action/environment
 - 📊 **Win-rate logging**, auto-reset, and fall prevention
 - 💥 Trains and plays entirely in *real-time* on top of the game
 
@@ -51,41 +46,3 @@ Multiple agents are trained to handle different components of gameplay (movement
 2. Launch **Dark Souls III**, teleport to Iudex
 3. Make sure offsets in `address.py` match your game version
 4. Train or run the agent using provided scripts
-
----
-
-## 🧪 Running Trained Agents
-
-Each environment has a test script:
-
-```bash
-# Run trained combat agent
-python test_act2.py
-
-# Run camera control agent
-python test_cam.py
-
-# Run movement control
-python test_move.py
-
-# Run lock-on toggling
-python test_lock.py
-```
-
-## 🧠 Training
-
-Each skill can be trained independently:
-
-```bash
-### Movement (PPO)
-python move_training.py
-
-### Dodging (Q-learning)
-python dodge_training.py
-
-### Combat actions (Q-learning)
-python act_training.py
-
-### Camera rotation (PPO)
-python cam_training.py
-```
