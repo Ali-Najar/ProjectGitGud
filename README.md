@@ -2,7 +2,7 @@
 
 This project implements a modular Reinforcement Learning (RL) framework that learns to defeat the boss **Iudex Gundyr** in *Dark Souls III* by simulating real keyboard inputs and reading game memory in real time.
 
-Multiple agents are trained to handle different components of gameplay (movement, dodging, camera control, combat decisions), and these are integrated into a full combat loop using PPO and Q-learning.
+Multiple agents are trained to handle different components of gameplay (movement, dodging, camera control, combat decisions), and these are integrated into a full combat loop using skill graph and DQN.
 
 ---
 
