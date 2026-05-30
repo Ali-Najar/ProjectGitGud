@@ -6,7 +6,7 @@ Multiple agents are trained to handle different components of gameplay (movement
 
 ---
 
-## 🎥 Demo (It might take a moment to load...)
+## 🎥 Demo
 
 https://github.com/user-attachments/assets/5692a345-ef7c-4d3c-8530-e9fa459ea9ea
 
