@@ -8,7 +8,7 @@ Multiple agents are trained to handle different components of gameplay (movement
 
 ## 🎥 Demo (It might take a moment to load...)
 
-[![Demo](assets/gundyr.webp)](assets/demo_480p.mp4)
+[![Demo](assets/gundyr_480.jpg)](assets/demo_480p.mp4)
 
 ---
 
